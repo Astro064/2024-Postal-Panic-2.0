@@ -18,6 +18,7 @@ import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 import java.util.List;
 
 
+
 /*
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
  * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
@@ -31,36 +32,19 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Basic: Linear OpMode V3", group="Linear OpMode")
-//@Disabled
-public class BasicOpMode_Linear extends LinearOpMode {
+@Autonomous(name = "Basic: Linear OpMode V4", group = "Linear OpMode")
+
+public class BasicOpMode_LinearV2 extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
 
     private AprilTagProcessor aprilTag;
-    @Override
-    public void runOpMode() {
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
 
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
+    AprilTagProcessor myAprilTagProcessor;
 
-
-        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
-        // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
-        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-
-
-
-
-
-
-
+    public void InitAprilTag() {
         AprilTagProcessor.Builder myAprilTagProcessorBuilder;
-        AprilTagProcessor myAprilTagProcessor;
 
         //Create a new AprilTag Proccessor Builder Project and assigning it to a variable
         myAprilTagProcessorBuilder = new AprilTagProcessor.Builder();
@@ -73,41 +57,6 @@ public class BasicOpMode_Linear extends LinearOpMode {
         myAprilTagProcessorBuilder.setTagLibrary(AprilTagGameDatabase.getCurrentGameTagLibrary());
 
 
-        //Don't think Library Builder is necessary nor Custom April Tags. Custom April Tag and Library Builder setup below:
-
-
-        //AprilTagMetadata myAprilTagMetadata;
-        //AprilTagLibrary.Builder myAprilTagLibraryBuilder;
-        //AprilTagProcessor.Builder myAprilTagProcessorBuilder;
-        //AprilTagLibrary myAprilTagLibrary;
-        //AprilTagProcessor myAprilTagProcessor;
-
-// Create a new AprilTagLibrary.Builder object and assigns it to a variable.
-        //myAprilTagLibraryBuilder = new AprilTagLibrary.Builder();
-
-// Add all the tags from the given AprilTagLibrary to the AprilTagLibrary.Builder.
-// Get the AprilTagLibrary for the current season.
-        //myAprilTagLibraryBuilder.addTags(AprilTagGameDatabase.getCurrentGameTagLibrary());
-
-// Create a new AprilTagMetdata object and assign it to a variable.
-        //myAprilTagMetadata = new AprilTagMetdata(55, "Our Awesome Team Tag", 3.5, DistanceUnit.INCH);
-
-// Add a tag to the AprilTagLibrary.Builder.
-        //myAprilTagLibraryBuilder.addTag(myAprilTagMetadata);
-
-// Build the AprilTag library and assign it to a variable.
-        //myAprilTagLibrary = myAprilTagLibraryBuilder.build();
-
-// Create a new AprilTagProcessor.Builder object and assign it to a variable.
-        //myAprilTagProcessorBuilder = new AprilTagProcessor.Builder();
-
-// Set the tag library.
-        //myAprilTagProcessorBuilder.setTagLibrary(myAprilTagLibrary);
-
-// Build the AprilTag processor and assign it to a variable.
-        //myAprilTagProcessor = myAprilTagProcessorBuilder.build();
-
-
         //Optional: set other custom features of the AprilTag Processor (4 are shown here)
         myAprilTagProcessorBuilder.setDrawTagID(true);                  //Default: ture, for all detections
         myAprilTagProcessorBuilder.setDrawTagOutline(true);            //Default: true, when tag size was provided (thus eligible for pose estimation)
@@ -115,29 +64,8 @@ public class BasicOpMode_Linear extends LinearOpMode {
         myAprilTagProcessorBuilder.setDrawCubeProjection(true);        //Default: false
 
         // Create an AprilTagProcessor by calling build()
-        myAprilTagProcessor = myAprilTagProcessorBuilder.build();
 
-
-        //AprilTag Java Builder Chain Example - - - - - - - - -
-
-
-        //AprilTagProcessor myAprilTagProcessor;
-
-        //myAprilTagProcessor = new AprilTgaProcessor.Builder()
-        //.setTagLibrary(myAprilTagLibrary)
-        //.setDrawTagID(true)
-        //.setDrawTagOutline(true)
-        //.setDrawAxes(true)
-        //.setDrawCubeProjection(true)
-        //.build();
-
-
-        //TfodProcessor myTfodProcessor;
-        // Create the TensorFLow Obeject Detection Processor and assing it to a variable
-        //myTfodProcessor = TfodProcessor.easyCreateWithDefaults();
-
-
-        //TensorFlow Initialization - Builder  - - - - - - -
+        //TensorFlow Initialisation
 
         TfodProcessor.Builder myTfodProcessorBuilder;
         TfodProcessor myTfodProcessor;
@@ -152,30 +80,6 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
 // Create a TFOD Processor by calling build()
         myTfodProcessor = myTfodProcessorBuilder.build();
-
-        //TensorFlow Java Builder Chain - - - - - - - - -
-
-
-        //TfodProcessor myTfodProcessor;
-
-        //myTfodProcessor = new TfodProcessor.Builder()
-        //      .setMaxNumRecognitions(10)
-        //    .setUseObjectTracker(true)
-        //  .setTrackerMaxOverlap((float) 0.2)
-        //.setTrackerMinSize(16)
-        //.build();
-
-        // Enable or disable the AprilTag processor.
-        //myVisionPortal.setProcessorEnabled(myAprilTagProcessor, true);
-
-
-        //VisionPortal Initialization - Easy - - - - - -
-
-        //VisionPortal myVisionPortal;
-
-// Create a VisionPortal, with the specified camera and AprilTag processor, and assign it to a variable.
-        //myVisionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), myAprilTagProcessor);
-
 
         //VisionPortal Initialization - Builder - - - - - - - - -
 
@@ -207,24 +111,33 @@ public class BasicOpMode_Linear extends LinearOpMode {
 // Enable or disable the TensorFlow Object Detection processor.
         myVisionPortal.setProcessorEnabled(myTfodProcessor, true);
 
-
-        //Java Builder Chain - - - - - - -
-
-        //VisionPortal myVisionPortal;
-
-        //myVisionPortal = new VisionPortal.Builder()
-        //      .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
-        //    .addProcessor(myAprilTagProcessor)
-        //  .setCameraResolution(new Size(640, 480))
-        //.setStreamFormat(VisionPortal.StreamFormat.YUY2)
-        //     .enableCameraMonitoring(true)
-        // .setAutoStopLiveView(true)
-        //   .build();
-
-
 // Enable or disable the AprilTag processor.
         // myVisionPortal.setProcessorEnabled(myAprilTagProcessor, true);
 
+
+    }
+
+
+
+
+
+
+    @Override
+    public void runOpMode() {
+
+        InitAprilTag();
+
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+
+        // Initialize the hardware variables. Note that the strings used here as parameters
+        // to 'get' must correspond to the names assigned during the robot configuration
+        // step (using the FTC Robot Controller app on the phone).
+
+
+        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
+        // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
+        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -243,10 +156,9 @@ public class BasicOpMode_Linear extends LinearOpMode {
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
             double drive = -gamepad1.left_stick_y;
-            double turn  =  gamepad1.right_stick_x;
+            double turn = gamepad1.right_stick_x;
 
             //AprilTag FOR Loop:
-
 
 
             List<AprilTagDetection> myAprilTagDetections;  // list of all detections
@@ -256,7 +168,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
             myAprilTagDetections = myAprilTagProcessor.getDetections();
 
 // Cycle through through the list and process each AprilTag.
-            for ( AprilTagDetection tempTag : myAprilTagDetections) {
+            for (AprilTagDetection tempTag : myAprilTagDetections) {
 
                 if (tempTag.metadata != null) {  // This check for non-null Metadata is not needed for reading only ID code.
                     myAprilTagIdCode = tempTag.id;
@@ -295,13 +207,12 @@ public class BasicOpMode_Linear extends LinearOpMode {
                     //April Tag Detection (To remain after variable definitions:
 
 
-
                     int myAprilTagIDCode = myAprilTagDetection.id;
 
                     telemetryAprilTag();
                 }
-                leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
-                rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
+                leftPower = Range.clip(drive + turn, -1.0, 1.0);
+                rightPower = Range.clip(drive - turn, -1.0, 1.0);
 
                 // Tank Mode uses one stick to control each wheel.
                 // - This requires no math, but it is hard to drive forward slowly and keep straight.
@@ -322,8 +233,6 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
 
 
-
-//Separate Source for Telemetry
     private void telemetryAprilTag() {
 
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
@@ -356,8 +265,6 @@ public class BasicOpMode_Linear extends LinearOpMode {
         telemetry.addData("Roll", AprilTagDetection.ftcPose.roll);
         telemetry.addData("Yaw", AprilTagDetection.ftcPose.yaw);
         */
-
-
 
 
     }

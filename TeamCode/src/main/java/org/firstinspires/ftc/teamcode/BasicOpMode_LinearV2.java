@@ -65,6 +65,8 @@ public class BasicOpMode_LinearV2 extends LinearOpMode {
 
         // Create an AprilTagProcessor by calling build()
 
+        myAprilTagProcessor = myAprilTagProcessorBuilder.build();
+
         //TensorFlow Initialisation
 
         TfodProcessor.Builder myTfodProcessorBuilder;

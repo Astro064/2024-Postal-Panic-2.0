@@ -32,6 +32,8 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
+//WORKING APRIL TAG CODE WITH TELEMETRY AND DISTANCES - NOT ADJUSTED - TESTED ONLY WITH DIGITAL APRIL TAGS
+
 @Autonomous(name = "Basic: Linear OpMode V5", group = "Linear OpMode")
 
 public class BasicOpMode_LinearV3 extends LinearOpMode {
@@ -150,7 +152,6 @@ public class BasicOpMode_LinearV3 extends LinearOpMode {
         telemetry.addData("Roll", AprilTagDetection.ftcPose.roll);
         telemetry.addData("Yaw", AprilTagDetection.ftcPose.yaw);
         */
-
 
     }
 

@@ -115,8 +115,7 @@ public class BasicOpMode_LinearV3 extends LinearOpMode {
 // Enable or disable the AprilTag processor.
         // myVisionPortal.setProcessorEnabled(myAprilTagProcessor, true);
 
-
-    }
+            }
 
 
     private void telemetryAprilTag() {

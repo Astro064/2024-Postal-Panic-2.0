@@ -133,12 +133,12 @@ public class AprilTag {
 
     }
 
-    public static void UpdateAprilTag()    {
+    public static int UpdateAprilTag()    {
         //AprilTag FOR Loop:
 
 
         List<AprilTagDetection> myAprilTagDetections;  // list of all detections
-        int myAprilTagIdCode;                           // ID code of current detection, in for() loop
+        int myAprilTagIdCode = -1;                           // ID code of current detection, in for() loop
 
 // Get a list of AprilTag detections.
         myAprilTagDetections = myAprilTagProcessor.getDetections();
@@ -182,12 +182,13 @@ public class AprilTag {
 
                 //April Tag Detection (To remain after variable definitions:
 
-
-                int myAprilTagIDCode = myAprilTagDetection.id;
+                myAprilTagIdCode = myAprilTagDetection.id;
             }
 
 
         }
+
+        return myAprilTagIdCode;
 
     }
 

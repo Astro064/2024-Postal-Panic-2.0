@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 public class LearningWithLachie {
 
 
-    public static void MecanumInit(DcMotor frontLeft, DcMotor frontRight,) {
+    public static void MecanumInit(DcMotor frontLeft, DcMotor frontRight) {
 
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         frontRight.setDirection(DcMotorSimple.Direction.REVERSE);

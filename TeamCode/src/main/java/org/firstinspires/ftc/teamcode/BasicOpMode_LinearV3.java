@@ -49,7 +49,11 @@ public class BasicOpMode_LinearV3 extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        AprilTag.InitAprilTag(hardwareMap.get(WebcamName.class, "Webcam 1"));
+
+
+        WebcamName webcam = hardwareMap.get(WebcamName.class, "Webcam 1");
+
+        AprilTag.InitAprilTag(webcam);
 
 
         telemetry.addData("Status", "Initialized");
@@ -80,6 +84,8 @@ public class BasicOpMode_LinearV3 extends LinearOpMode {
             double leftPower;
             double rightPower;
 
+
+
             // Choose to drive using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
 
@@ -109,7 +115,7 @@ public class BasicOpMode_LinearV3 extends LinearOpMode {
                 telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
                 telemetry.update();
 
-                LocalisationController.LocalisationController(WebcamName, telemetry);
+               // LocalisationController.LocalisationController(webcam, telemetry);
 
             }
         }

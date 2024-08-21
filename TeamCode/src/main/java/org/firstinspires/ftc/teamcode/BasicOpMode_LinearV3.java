@@ -109,6 +109,11 @@ public class BasicOpMode_LinearV3 extends LinearOpMode {
                 // Show the elapsed game time and wheel power.
 
 
+
+
+
+
+
                 AprilTag.UpdateAprilTag();
                 AprilTag.telemetryAprilTag(telemetry);
                 telemetry.addData("Status", "Run Time: " + runtime.toString());

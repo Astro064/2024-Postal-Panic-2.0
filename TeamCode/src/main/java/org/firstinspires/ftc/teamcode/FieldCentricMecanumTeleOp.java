@@ -16,6 +16,8 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
     private CRServo ArmAxonCR;
     private Servo ClawAxon;
 
+    private DcMotor frontRightMotor;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -25,25 +27,32 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         int DesiredAngle3;
         double DesiredAngle4;
         int DeadBand;
-        int Arm_Pos;
+       // int Arm_Pos;
         double servoPower = 0;
-        int WhichAngle =0;
+        int WhichAngle = 0;
         DcMotor frontLeftMotor = hardwareMap.dcMotor.get("frontLeftMotor");
         DcMotor backLeftMotor = hardwareMap.dcMotor.get("backLeftMotor");
         DcMotor frontRightMotor = hardwareMap.dcMotor.get("frontRightMotor");
         DcMotor backRightMotor = hardwareMap.dcMotor.get("backRightMotor");
         ArmAxonCR = hardwareMap.get(CRServo.class, "ArmAxonCR");
         ClawAxon = hardwareMap.get(Servo.class, "ClawAxon");
+        // Find a motor in the hardware map named "frontRightMotor"
+        DcMotor motor = hardwareMap.dcMotor.get("frontRightMotor");
+
+
 
         DesiredAngle1 = -250;
         DesiredAngle2 = -180;
         DesiredAngle3 = -75;
         DesiredAngle4 = -0.1;
         DeadBand = 1;
-        frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         ArmAxonCR.setDirection(CRServo.Direction.REVERSE);
 
+//Reset the motor encoder so that it reads zero ticks
+        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        // Turn the motor back on, required if you use STOP_AND_RESET_ENCODER
+        motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
 
@@ -81,7 +90,15 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             double x = -gamepad1.left_stick_x;
             double rx = -gamepad1.right_stick_x;
 
+            double CPR = 8192;
 
+            // Get the current position of the motor
+            int position = motor.getCurrentPosition();
+            double revolutions = position/CPR;
+
+            double angle = revolutions * 360;
+
+            double Arm_Pos = -angle;
 
 
 
@@ -115,9 +132,9 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             backRightMotor.setPower(backRightPower);
 
 
-            Arm_Pos = (frontRightMotor.getCurrentPosition() / 8192) * 360;
+
             if (gamepad1.right_bumper) {
-                ClawAxon.setPosition(0.5);
+                ClawAxon.setPosition(0.3);
             } else if (gamepad1.left_bumper) {
                 ClawAxon.setPosition(0);
             }

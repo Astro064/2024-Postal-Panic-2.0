@@ -10,8 +10,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp (name = "Mecanum TeleOp", group = "LinearOpMode")
-public class FieldCentricMecanumTeleOp extends LinearOpMode {
+@TeleOp (name = "Mecanum TeleOp Two Drivers", group = "LinearOpMode")
+public class MecanumTeleOpTwoDrivers extends LinearOpMode {
 
     private CRServo ArmAxonCR;
     private Servo ClawAxon;
@@ -27,7 +27,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         int DesiredAngle3;
         double DesiredAngle4;
         int DeadBand;
-       // int Arm_Pos;
+        // int Arm_Pos;
         double servoPower = 0;
         int WhichAngle = 0;
         DcMotor frontLeftMotor = hardwareMap.dcMotor.get("frontLeftMotor");
@@ -51,13 +51,14 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
 //Reset the motor encoder so that it reads zero ticks
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        // Turn the motor back on, required if STOP_AND_RESET_ENCODER used
+        // Turn the motor back on, required if you use STOP_AND_RESET_ENCODER
         motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
 
         // Reverse the right side motors. This may be wrong.
-        // If robot moves backwards when commanded to go forwards reverse the left side instead.
+        // If robot moves backwards when commanded to go forwards,
+        // reverse the left side instead.
         // See the note about this earlier on this page.
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -78,16 +79,14 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
         imu.initialize(parameters);
 
-
-
         waitForStart();
 
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
-            double y = gamepad1.left_stick_y; // Y stick value is reversed
-            double x = -gamepad1.left_stick_x;
-            double rx = -gamepad1.right_stick_x;
+            double y = gamepad1.left_stick_y + gamepad2.left_stick_y/2; // Y stick value is reversed
+            double x = -gamepad1.left_stick_x + -gamepad2.left_stick_x/2;
+            double rx = -gamepad1.right_stick_x + -gamepad2.right_stick_x/2;
 
             double CPR = 8192;
 
@@ -132,24 +131,24 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
 
 
 
-            if (gamepad1.right_bumper) {
+            if (gamepad2.right_bumper) {
                 ClawAxon.setPosition(0.3);
-            } else if (gamepad1.left_bumper) {
+            } else if (gamepad2.left_bumper) {
                 ClawAxon.setPosition(0);
             }
-            if (gamepad1.x) {
+            if (gamepad2.x) {
                 ArmAxonCR.setPower(1 * (1 - Arm_Pos / DesiredAngle1));
                 servoPower = 1 * (1 - Arm_Pos / DesiredAngle1);
                 WhichAngle = 1;
-            } else if (gamepad1.a) {
+            } else if (gamepad2.a) {
                 ArmAxonCR.setPower(1 * (1 - Arm_Pos / DesiredAngle2));
                 servoPower = 1 * (1 - Arm_Pos / DesiredAngle2);
                 WhichAngle = 2;
-            } else if (gamepad1.b) {
+            } else if (gamepad2.b) {
                 ArmAxonCR.setPower(0.5 + 1 * (1 - Arm_Pos / DesiredAngle3));
                 servoPower = 0.5 + 1 * (1 - Arm_Pos / DesiredAngle3);
                 WhichAngle = 3;
-            } else if (gamepad1.y) {
+            } else if (gamepad2.y) {
                 if (Arm_Pos < -20) {
                     ArmAxonCR.setPower(0.001 * (1 - Arm_Pos / DesiredAngle4));
                     servoPower = 0.001 * (1 - Arm_Pos / DesiredAngle4);
@@ -176,27 +175,11 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                     }
                 }
             }
+
+
             telemetry.addData("Arm_Pos", Arm_Pos);
             telemetry.addData("servoPower", servoPower);
             telemetry.update();
         }
     }
 }
-
-
-            /*
-            double Yaw   = robotOrientation.getYaw(AngleUnit.DEGREES);
-            double Pitch = robotOrientation.getPitch(AngleUnit.DEGREES);
-            double Roll  = robotOrientation.getRoll(AngleUnit.DEGREES);
-
-            // Read Angular Velocities
-            myRobotAngularVelocity = imu.getRobotAngularVelocity(AngleUnit.DEGREES);
-
-            float zRotationRate = myRobotAngularVelocity.zRotationRate;
-            float xRotationRate = myRobotAngularVelocity.xRotationRate;
-            float yRotationRate = myRobotAngularVelocity.yRotationRate;
-*/
-
-
-
-
